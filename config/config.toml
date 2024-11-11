@@ -3,7 +3,7 @@
     ticker = "5m"
 
 [database]
-    host = "localhost"
+    host = "db"
     port = "5432"
     user = "admin"
     password = "2222"
