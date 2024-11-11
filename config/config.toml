@@ -1,2 +1,13 @@
 [server]
-    port = ""
+    port = "8080"
+    ticker = "5m"
+
+[database]
+    host = "localhost"
+    port = "5432"
+    user = "admin"
+    password = "2222"
+    dbname = "pelith"
+
+[infura]
+    api_key = ""    

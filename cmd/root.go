@@ -2,28 +2,32 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	"os"
 
+	"github.com/Largeb0525/Trading_Ace/database"
+	"github.com/Largeb0525/Trading_Ace/server"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
-var RootCmd = &cobra.Command{
+var rootCmd = &cobra.Command{
 	Use:   "trading_ace",
 	Short: "trading_ace",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Hello from Cobra CLI!")
+		db := database.InitPostgreSQL()
+		defer db.Close()
+		server.StartServer()
 	},
 }
 
 func init() {
 	cobra.OnInitialize(initConfig)
-
-	RootCmd.PersistentFlags().String("config", "", "config file (default is ./config.toml)")
+	rootCmd.PersistentFlags().String("config", "", "config file (default is ./config.toml)")
 }
 
 func initConfig() {
-	configFile, _ := RootCmd.Flags().GetString("config")
+	configFile, _ := rootCmd.Flags().GetString("config")
 	if configFile != "" {
 		viper.SetConfigFile(configFile)
 	} else {
@@ -35,5 +39,11 @@ func initConfig() {
 			fmt.Fprintf(os.Stderr, "Error loading config file: %v\n", err)
 			os.Exit(1)
 		}
+	}
+}
+
+func Execute() {
+	if err := rootCmd.Execute(); err != nil {
+		log.Fatalf("Error executing command: %s", err)
 	}
 }
