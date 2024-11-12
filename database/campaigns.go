@@ -12,7 +12,7 @@ func initCampaignTable() {
 	CREATE TABLE IF NOT EXISTS campaigns (
 		campaign_id SERIAL PRIMARY KEY,
 		name VARCHAR(50) NOT NULL,
-		pool_address VARCHAR(100) NOT NULL,
+		pool_address VARCHAR(100) NOT NULL CHECK (pool_address <> ''),
 		start_time BIGINT NOT NULL,
 		end_time BIGINT NOT NULL,
 		created_at BIGINT DEFAULT EXTRACT(EPOCH FROM NOW()),
@@ -36,19 +36,6 @@ func GetCampaignByID(id int) (*Campaign, error) {
 			return nil, fmt.Errorf("campaign with ID %d not found", id)
 		}
 		return nil, fmt.Errorf("failed to query campaign by ID: %w", err)
-	}
-	return &campaign, nil
-}
-
-func GetCampaignByAddress(address string) (*Campaign, error) {
-	var campaign Campaign
-	query := `SELECT campaign_id, name, pool_address, start_time, end_time FROM campaigns WHERE pool_address = $1`
-	err := db.QueryRow(query, address).Scan(&campaign.CampaignID, &campaign.Name, &campaign.PoolAddress, &campaign.StartTime, &campaign.EndTime)
-	if err != nil {
-		if err == sql.ErrNoRows {
-			return nil, fmt.Errorf("campaign with address %s not found", address)
-		}
-		return nil, fmt.Errorf("failed to query campaign by address: %w", err)
 	}
 	return &campaign, nil
 }
