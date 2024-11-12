@@ -14,8 +14,8 @@ func initUserTaskTable() {
 		user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
 		task_id INT REFERENCES tasks(task_id) ON DELETE CASCADE,
 		completed BOOLEAN DEFAULT FALSE,
-		amount FLOAT DEFAULT 0,
-		points FLOAT DEFAULT 0,
+		amount FLOAT DEFAULT 0 CHECK (amount >= 0),
+		points FLOAT DEFAULT 0 CHECK (points >= 0),
 		created_at BIGINT DEFAULT EXTRACT(EPOCH FROM NOW()),
 		updated_at BIGINT DEFAULT EXTRACT(EPOCH FROM NOW())
 	);

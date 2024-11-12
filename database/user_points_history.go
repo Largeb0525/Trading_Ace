@@ -13,7 +13,7 @@ func initUserPointsHistoryTable() {
 		user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
 		task_id INT REFERENCES tasks(task_id) ON DELETE CASCADE,
 		campaign_id INT REFERENCES campaigns(campaign_id) ON DELETE CASCADE,
-		points FLOAT NOT NULL,
+		points FLOAT NOT NULL CHECK (points >= 0),
 		created_at BIGINT DEFAULT EXTRACT(EPOCH FROM NOW())
 		);
 	CREATE INDEX IF NOT EXISTS idx_user_id ON user_points_history(user_id);

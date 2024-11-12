@@ -13,8 +13,8 @@ func initCampaignTable() {
 		campaign_id SERIAL PRIMARY KEY,
 		name VARCHAR(50) NOT NULL,
 		pool_address VARCHAR(100) NOT NULL CHECK (pool_address <> ''),
-		start_time BIGINT NOT NULL,
-		end_time BIGINT NOT NULL,
+		start_time BIGINT NOT NULL CHECK (start_time >= 0),
+		end_time BIGINT NOT NULL CHECK (end_time > start_time),
 		created_at BIGINT DEFAULT EXTRACT(EPOCH FROM NOW()),
 		updated_at BIGINT DEFAULT EXTRACT(EPOCH FROM NOW())
 		);

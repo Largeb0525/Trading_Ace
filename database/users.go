@@ -11,7 +11,7 @@ func initUserTable() {
 	query := `
 	CREATE TABLE IF NOT EXISTS users (
 		user_id SERIAL PRIMARY KEY,
-		address VARCHAR(100) UNIQUE NOT NULL,
+		address VARCHAR(100) UNIQUE NOT NULL CHECK (address <> ''),
 		created_at BIGINT DEFAULT EXTRACT(EPOCH FROM NOW())
 	);
 	CREATE UNIQUE INDEX IF NOT EXISTS idx_user_address ON users(address);`

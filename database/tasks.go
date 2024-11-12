@@ -13,13 +13,13 @@ func initTaskTable() {
 	CREATE TABLE IF NOT EXISTS tasks (
 		task_id SERIAL PRIMARY KEY,
 		campaign_id INT REFERENCES campaigns(campaign_id) ON DELETE CASCADE,
-		type VARCHAR(50) NOT NULL,
+		type VARCHAR(50) NOT NULL CHECK (type <> ''),
 		description TEXT,
-		onboarding_reward FLOAT DEFAULT 0,
-		onboarding_threshold FLOAT DEFAULT 0,
-		points_pool FLOAT DEFAULT 0,
-		start_time BIGINT NOT NULL,
-		end_time BIGINT NOT NULL,
+		onboarding_reward FLOAT DEFAULT 0 CHECK (onboarding_reward >= 0),
+    	onboarding_threshold FLOAT DEFAULT 0 CHECK (onboarding_threshold >= 0),
+		points_pool FLOAT DEFAULT 0 CHECK (points_pool >= 0),
+		start_time BIGINT NOT NULL CHECK (start_time >= 0),
+		end_time BIGINT NOT NULL CHECK (end_time > start_time),
 		created_at BIGINT DEFAULT EXTRACT(EPOCH FROM NOW()),
 		updated_at BIGINT DEFAULT EXTRACT(EPOCH FROM NOW())
 		);
@@ -79,24 +79,6 @@ func GetExpiredSharePoolTasks(now int64, lastCheckTime int64) ([]Task, error) {
 	query := `SELECT task_id, campaign_id, type, description, onboarding_reward, onboarding_threshold, points_pool, start_time, end_time 
 	FROM tasks WHERE end_time < $1 AND end_time > $2 AND type = 'share_pool'`
 	return queryTasks(query, now, lastCheckTime)
-}
-
-func GetCampaignIDsByTaskIDs(taskIDs []int) ([]int, error) {
-	query := `SELECT DISTINCT campaign_id FROM tasks WHERE task_id = ANY($1)`
-	var campaignIDs []int
-	rows, err := db.Query(query, taskIDs)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	for rows.Next() {
-		var campaignID int
-		if err := rows.Scan(&campaignID); err != nil {
-			return nil, err
-		}
-		campaignIDs = append(campaignIDs, campaignID)
-	}
-	return campaignIDs, nil
 }
 
 func queryTasks(query string, args ...interface{}) ([]Task, error) {
