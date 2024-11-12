@@ -1,6 +1,8 @@
 package eth
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestParseAddress(t *testing.T) {
 	type args struct {
