@@ -12,7 +12,11 @@ var client *ethclient.Client
 
 func initClient() {
 	var err error
-	client, err = ethclient.Dial(fmt.Sprintf("wss://mainnet.infura.io/ws/v3/%s", viper.GetString("infura.api_key")))
+	api_key := viper.GetString("infura.api_key")
+	if api_key == "" {
+		log.Fatal("/config/config.toml infura api key is required")
+	}
+	client, err = ethclient.Dial(fmt.Sprintf("wss://mainnet.infura.io/ws/v3/%s", api_key))
 	if err != nil {
 		log.Fatal(err)
 	}
