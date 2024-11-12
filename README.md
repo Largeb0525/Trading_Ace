@@ -1,6 +1,6 @@
 # Trading_Ace
 
-Trading_Ace is an application designed to integrate Uniswap V2 swap events, providing rewards based on users' weekly trading volume. This project is developed in Go and relies on Infura's Ethereum node services.
+Trading_Ace is an application designed to integrate Uniswap V2 swap activities, providing rewards based on user trading volume according to task settings. It supports multiple pools and multiple tasks within the same pool. This project is developed in Go and relies on Infura’s Ethereum node service.
 
 ## Requirements
 
