@@ -5,12 +5,13 @@ DB_HOST = localhost
 DOCKER_COMPOSE = docker-compose
 GO_FILES = $(shell find . -type f -name '*.go')
 
-.PHONY: all help build run test lint docker-build docker-up docker-down docker-logs docker-clean docker-db
+.PHONY: all help modvendor build run test lint docker-build docker-up docker-down docker-logs docker-clean docker-db
 
 all: help
 
 help:
 	@echo "Available make commands:"
+	@echo "  make modvendor      - Run 'go mod vendor'"
 	@echo "  make build          - Build the Go application"
 	@echo "  make run            - Run the Go application"
 	@echo "  make test           - Run tests"
@@ -21,6 +22,10 @@ help:
 	@echo "  make docker-logs    - Show logs of running Docker services"
 	@echo "  make docker-clean   - Clean up generated files and Docker containers"
 	@echo "  make docker-db      - Connect to Docker PostgreSQL"
+
+modvendor:
+	go mod tidy
+	go mod vendor
 
 build:
 	@echo "Building $(APP_NAME)..."
