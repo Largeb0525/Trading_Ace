@@ -3,6 +3,7 @@ module github.com/Largeb0525/Trading_Ace
 go 1.22
 
 require (
+	github.com/agiledragon/gomonkey/v2 v2.12.0
 	github.com/ethereum/go-ethereum v1.14.11
 	github.com/gin-gonic/gin v1.10.0
 	github.com/lib/pq v1.10.9

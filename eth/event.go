@@ -74,6 +74,9 @@ func timeToBlockNumber(targetTime int64, afterBlock uint64, beforeBlock uint64) 
 
 	for low <= high {
 		mid := (low + high) / 2
+		if mid == low {
+			break
+		}
 		blockTime, err := getBlockTime(mid)
 		if err != nil {
 			return 0, err
@@ -86,7 +89,9 @@ func timeToBlockNumber(targetTime int64, afterBlock uint64, beforeBlock uint64) 
 			high = mid - 1
 		}
 	}
-
+	if low == 0 {
+		return 0, nil
+	}
 	return low - 1, nil
 }
 
